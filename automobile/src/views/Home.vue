@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import carMask from '@/components/carMask.vue'; // @ is an alias to /src
 
@@ -15,3 +15,9 @@ export default Vue.extend({
   },
 });
 </script>
+<style lang="scss" scoped>
+  .home{
+    font-size: 14px;
+  }
+</style>
+
