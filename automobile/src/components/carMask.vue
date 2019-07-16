@@ -1,10 +1,10 @@
 <template>
     <div id="root">
-        <div class="maskMain">
-            <div class="maskCont" >
+        <div class="maskMain" v-show="flag">
+            <div class="maskCont">
                <div  v-for="(val,index) in getCarBrandList"
                  :key="index">
-                    <p>{{val.GroupName}}</p>
+                    <p @click="upflag">{{val.GroupName}}</p>
                     <ul>
                         <li v-for="(item,i) in val.GroupList"
                         :key='i' @click="toCarDetail(item.SerialID)">
@@ -27,25 +27,29 @@ import {mapState, mapActions} from 'vuex';
 export default Vue.extend({
     data(){
         return{
-            flag:true
+         
         }
     },
   computed: {
     ...mapState({
-      getCarBrandList: state=>state.home.getCarBrandList
+      getCarBrandList: state=>state.home.getCarBrandList,
+      flag:state=>state.home.flag,
+      MasterID:state=>state.home.MasterID
     })
   },
   methods: {
-    ...mapActions({
-       getCarBrandData:'home/getCarBrandData'
-    }),
     toCarDetail(SerialID){
-        // console.log(SerialID+'&_'+1563237339049)
          this.$router.history.push('/offical?SerialID='+SerialID)
+    },
+    ...mapActions({
+        gitMasterID:'home/gitMasterID'
+    }),
+    upflag(){
+      this.gitMasterID(false)
     }
   },
   created(){
-      this.getCarBrandData();
+     
   }
 });
 </script>
@@ -73,7 +77,8 @@ export default Vue.extend({
         box-shadow: 0 0 0.5rem #eee;
         width: 75%;
         overflow-y: auto;
-        // transform: translateX(100%);
+        background:#fff;
+
         .show{
             transform: translateX(0);
         }

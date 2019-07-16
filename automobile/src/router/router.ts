@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
 import quotation from '@/views/quotation.vue'
+import Styles from '@/views/Styles.vue'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       　path:'/quotation',
         name: 'quotation',
         component: quotation
+    },
+    {
+      path: '/Styles',
+      name: 'Styles',
+      component: Styles
     }
   ]
 })
