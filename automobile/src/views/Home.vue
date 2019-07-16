@@ -1,17 +1,48 @@
 <template>
   <div class="home">
-       
-    <carMask/>
-  </div>
+       <Homelist :data='list' />
+       <carMask/>
+  </div> 
 </template>
 
-<script lang="ts">
+<script>
+
 import Vue from 'vue';
 import carMask from '@/components/carMask.vue'; // @ is an alias to /src
-
+import Homelist from '@/components/Homelist.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import {mapState,mapActions} from 'vuex'
 export default Vue.extend({
-  components: {
-   carMask,
+  data(){
+    return{
+       MBscroll:''
+    }
   },
-});
+  components: {
+   carMask,Homelist
+  },
+  computed:{
+      ...mapState({
+        list:state=>state.home.list
+      })
+  },
+  methods:{
+    ...mapActions({
+        getlist:'home/getlist'
+    })
+    
+  },
+   created(){
+        this.getlist() 
+     
+  }
+})
 </script>
+
+<style lang="scss" scope>
+  .home{
+    width: 100%;
+    height: 100%;
+  }
+
+</style>
