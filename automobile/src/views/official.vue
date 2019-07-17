@@ -51,12 +51,14 @@
 <script>
 import Vue from 'vue';
 import {mapState, mapActions,mapMutations} from 'vuex';
+import {getCityId} from '../services/home'
 export default Vue.extend({
     data(){
         return{
             SerialID:0,
             defaultIndex:-1,
-            defValue:'全部'
+            defValue:'全部',
+            cityId:null
         }
     },
   computed: {
@@ -83,11 +85,14 @@ export default Vue.extend({
         this.changeYearList({value:this.defValue})
     },
     cheapAsk(link,carId){
+        
         let cityId=link.split('?')[1].split('&')[2].split('=')[1];
-        this.$router.history.push('/quotation?carId='+carId+'&cityId='+210)
+        this.$router.history.push('/quotation?carId='+carId+'&cityId='+this.cityId)
     }
   },
-  created(){
+  async created(){
+      let city=await getCityId();
+      this.cityId=city.data.CityID;
       this.SerialID=Number(this.$route.query.SerialID);
       this.getCarDetailData({SerialID:this.SerialID})
   }

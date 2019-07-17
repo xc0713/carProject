@@ -1,6 +1,6 @@
 <template>
-    <div id="root">
-        <div class="maskMain" v-show="flag">
+    <div id="root" v-show="flag">
+        <div class="maskMain" >
             <div class="maskCont">
                <div  v-for="(val,index) in getCarBrandList"
                  :key="index">
@@ -65,6 +65,10 @@ export default Vue.extend({
     #root{
         width: 100%;
         height: 100%;
+        position: fixed;
+        left: 0;
+        top:0;
+        z-index: 100;
     }
     .maskMain{
         position: fixed;
@@ -72,7 +76,7 @@ export default Vue.extend({
         right: 0;
         width: 0;
         transition: all .2s ease;
-        z-index: 100;
+        z-index: 101;
         height: 100%;
         box-shadow: 0 0 0.5rem #eee;
         width: 75%;

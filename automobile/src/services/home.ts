@@ -1,9 +1,17 @@
 import request from '../utils/request'
 
 export function getCarBrand(params:any){
-    console.log(params,'params....')
+    // console.log(params,'params....')
     return request({
         url:'/v2-car-getMakeListByMasterBrandId.html?MasterID='+params,
+        method:"GET"
+    })
+}
+///location-client.html 城市id
+export function getCityId(){
+    // console.log(params,'params....')
+    return request({
+        url:'location-client.html',
         method:"GET"
     })
 }
