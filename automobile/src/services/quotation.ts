@@ -19,3 +19,10 @@ export function getProvinceList(params:any){
         method:"GET"
     })
 }
+export function sendData(params:any){
+    return request({
+        url:'/h2-submit-lowprice.html?carid='+params.carid+'&mobile='+params.mobile+'&dealerids='+params.dealerids+'&location='+params.location+'&name='+params.name,
+        method:"GET"
+    })
+}
+

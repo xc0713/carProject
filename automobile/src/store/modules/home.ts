@@ -1,4 +1,5 @@
-import {getCarBrand,getCarDetail,Getlist} from '@/services/home';
+import {getCarBrand,getCarDetail,Getlist} from '../../services/home';
+import {format} from '../../utils/index';
 const state={
     getCarBrandList:[],
     getcarDetailArr:[],
@@ -12,7 +13,8 @@ const state={
     letter:[],
     INDEX:'',
     MasterID:0,
-    flag:false
+    flag:false,
+    carId:''
 }
 // 异步改变
 const actions = {
@@ -25,8 +27,7 @@ const actions = {
     async getCarDetailData({commit}:any, payload:any){
             //  console.log('payload...',payload)
              let list:any=await getCarDetail({SerialID:payload.SerialID});
-             commit('changeCarDetailData',{market:list.data.market_attribute,lists:list.data.list,pic:list.data.CoverPhoto,count:list.data.pic_group_count})
-            //   console.log(list.data)
+             commit('changeCarDetailData',{market:list.data.market_attribute,lists:list.data.list,pic:list.data.CoverPhoto,count:list.data.pic_group_count,carId:list.data.BottomEntranceLink})
             // console.log('list...',list.data)
      }, 
      async getlist({commit}:any,payload:any){
@@ -48,6 +49,7 @@ const mutations = {
     },
     changeCarDetailData(state:any,payload:any){
         state.yearArr=[];
+        console.log('1233333',format(payload.lists))
         payload.lists.map((item:any,i:any)=>{
             let data = state.yearArr.filter((items:any)=>items===item.market_attribute.year);
             if(data.length){
@@ -56,7 +58,8 @@ const mutations = {
                 state.yearArr.push(item.market_attribute.year)
             }
         })
-    //    console.log('payload...', payload.lists)
+        console.log('payload...',payload.lists)
+        state.carId=payload.carId.split('?')[1].split('&')[1].split('=')[1];
         state.defType=payload.lists[0].exhaust_str+payload.lists[0].max_power_str+payload.lists[0].inhale_type;
         state.pic=payload.pic;
         state.count=payload.count;

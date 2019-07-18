@@ -1,8 +1,10 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '../views/Home.vue'
-import quotation from '@/views/quotation.vue'
-import Styles from '@/views/Styles.vue'
+import Router from 'vue-router';
+import Home from '../views/Home.vue';
+import quotation from '../views/quotation.vue';
+import Styles from '../views/Styles.vue';
+import offical from '../views/official.vue';
+import allCarStyle from '../views/allCarStyle.vue';
 
 Vue.use(Router)
 
@@ -18,7 +20,7 @@ export default new Router({
     {
       path: '/offical',
       name: 'offical',
-      component: () => import('@/views/official.vue')
+      component:offical
     },{
       　path:'/quotation',
         name: 'quotation',
@@ -28,6 +30,10 @@ export default new Router({
       path: '/Styles',
       name: 'Styles',
       component: Styles
+    },{
+      path: '/allCarStyle',
+      name: 'allCarStyle',
+      component: allCarStyle
     }
   ]
 })

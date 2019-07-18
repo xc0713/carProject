@@ -1,4 +1,4 @@
-import {getQuotation,getCityList,getProvinceList} from '../../services/quotation';
+import {getQuotation,getCityList,getProvinceList,sendData} from '../../services/quotation';
 const state={
     detailObj:{},
     quotationArr:[],
@@ -12,8 +12,8 @@ const actions = {
    async getQuotationData({commit}:any, payload:any){
         // console.log('payload...',payload)
         let list:any=await getQuotation({carId:Number(payload.carId),cityId:Number(payload.cityId)});
-        commit('changeQuotationData',{details:list.data.details,delList:list.data.list,pic:list.data.details&&list.data.details.serial.CoverPhoto,name:list.data.details&&list.data.details.serial.AliasName})
-        // console.log('list....',list.data.details.serial.AliasName)
+        commit('changeQuotationData',{details:list.data.details,delList:list.data.list,pic:list.data.details&&list.data.details.serial.Picture,name:list.data.details&&list.data.details.serial.AliasName})
+        //  console.log('list....',list.data.list)
     },
     async getCityData({commit}:any, payload:any){
         // console.log('payload...',payload)
@@ -25,7 +25,12 @@ const actions = {
         // console.log('payload...',payload)
         let list:any=await getProvinceList(payload);
         commit('getCityList',list.data)
-        //    console.log('list...11',list.data)
+        //  console.log('list...11',list.data)
+    },
+    async sendsData({commit}:any, payload:any){
+         console.log('payload...',payload)
+        let list:any=await sendData(payload);
+         console.log('list...11',list)
     }
 }
 // 同步改变, 改变数据的唯一途径
@@ -45,7 +50,7 @@ const mutations = {
         state.provinceArr=payload;
     },
     getCityList(state:any,payload:any){
-        console.log('payload...',payload)
+        // console.log('payload...',payload)
         state.cityList=payload;
     }
 }

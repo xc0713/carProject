@@ -10,7 +10,7 @@
                     <p>{{getmarket_attribute.dealer_price}} <span>万</span></p>
                     <p>指导价 {{getmarket_attribute.official_refer_price}}</p>
                     <div class="infoBtn">
-                        <button>询问低价</button>
+                        <button @click="askBtn">询问低价</button>
                     </div>
                 </div>
                 <div class="carList">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div class="carBottom">
+            <div class="carBottom"  @click="askBtn">
                 <p>询问底价</p>
                 <p>本地经销商为你报价</p>
             </div>
@@ -69,7 +69,8 @@ export default Vue.extend({
         getcarDetailArr: state=>state.home.getcarDetailArr,
         yearArr: state=>state.home.yearArr,
         newCarList:state=>state.home.newCarList,
-        defType:state=>state.home.defType
+        defType:state=>state.home.defType,
+        carId: state=>state.home.carId,
     })
   },
   methods: {
@@ -85,9 +86,11 @@ export default Vue.extend({
         this.changeYearList({value:this.defValue})
     },
     cheapAsk(link,carId){
-        
         let cityId=link.split('?')[1].split('&')[2].split('=')[1];
         this.$router.history.push('/quotation?carId='+carId+'&cityId='+this.cityId)
+    },
+    askBtn(){
+        this.$router.history.push('/quotation?carId='+this.carId+'&cityId='+201)
     }
   },
   async created(){
@@ -194,11 +197,12 @@ export default Vue.extend({
                     border-top: .15rem solid #f4f4f4;
                     padding: 0 .3rem;
                     font-size: .32rem;
-                    height: .77rem;
-                    line-height: .77rem;
+                    line-height: .8rem;
                     background: #fff;
                     span{
+                       display: inline-block;
                        padding-right: .46rem;
+                       font-size: .32rem;
                     }
                     .active{
                         color: #00afff;

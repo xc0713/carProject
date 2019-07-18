@@ -6,7 +6,7 @@
        <div class="content" ref='content'>
            <div class="contInfo">
                <img :src="pic" alt="">
-               <div class="contInfoDiv">
+               <div class="contInfoDiv" @click="toCarStyle">
                    <p>{{AliasName}}</p>
                    <p>{{detailObj&&detailObj.car_name}}</p>
                </div>
@@ -50,7 +50,7 @@
            </div>
        </div>
        <footer v-if="flag"> 
-           <button>询最低价</button>
+           <button @click="getcheapData">询最低价</button>
        </footer>
        <div class="city" v-if="activeFlag" >
            <div class="provinces">
@@ -84,8 +84,18 @@
                </div>
            </div>
        </div>
-       <div class="result" v-if="isOk">
-
+       <div class="result" v-if="isResult">
+            <div class="resultWrap">
+                <img src="../assets/dui.png" alt="">
+                <p class="p1">询价成功</p>
+                <p class="p2">
+                    稍后有专业汽车顾问为你服务 <br>
+                    请保持手机畅通
+                </p>
+                <div>
+                    <button @click="isResult=!isResult">确定</button>
+                </div>
+            </div>
        </div>
     </div>
 </template>
@@ -105,7 +115,9 @@ export default Vue.extend({
             maskFlag:false,
             name:'北京',
             carId:null,
-            message:''
+            message:'',
+            num:'',
+            isResult:false
         }
     },
   computed: {
@@ -122,18 +134,38 @@ export default Vue.extend({
     ...mapActions({
        getQuotationData:'quotation/getQuotationData',
        getCityData:'quotation/getCityData',
-       getProvinceData:'quotation/getProvinceData'
+       getProvinceData:'quotation/getProvinceData',
+       sendsData:'quotation/sendsData'
     }),
+    toCarStyle(){
+         this.$router.history.push('/allCarStyle')
+    },
     getcheapData(){
-        if(!this.personTel){
-            let telRes=/^1([38]\d|5[0-35-9]|7[3678])\d{8}$/.test(this.personTel);
-            this.isOk=!telRes;
-            this.message=telRes?'':'请输入正确的手机号';
-        }else if(!this.personName){
-            this.message=this.personName?'':'请输入真实的姓名';
+        this.num='';
+        // console.log(/^([\u4e00-\u9fa5]){2,7}$/.test(this.personName))
+        if(!/^([\u4e00-\u9fa5]){2,7}$/.test(this.personName)){
+            this.message='请输入真实的姓名';
             this.isOk=true;
-        }
-        console.log('personName....',this.personName)
+        }else if(!/^1([38]\d|5[0-35-9]|7[3678])\d{8}$/.test(this.personTel)){
+            this.message='请输入正确的手机号';
+            this.isOk=true;
+        }else{
+             let data=this.quotationArr.filter((item,i)=>{
+                 return item.flag===true;
+             })
+             if(data.length===0){
+                this.message='请先选择报价经销商';
+                this.isOk=true;
+             }else{     
+                 data.map(item=>{
+                    this.num+=item.dealerId+','
+                 })
+                 if(this.personName&&this.personTel&&this.name&&this.carId&&this.num){
+                     this.isResult=true;
+                 }
+                 this.sendsData({location:this.name,mobile:this.personTel,carid:this.carId,name:this.personName,dealerids:this.num});
+             }
+        } 
     },
     changeFlag(val){
         val.flag=!val.flag;
@@ -141,7 +173,7 @@ export default Vue.extend({
     changeActive(name,cityId){
         this.name=name;
         this.activeFlag=!this.activeFlag;
-         this.getQuotationData({carId:this.carId,cityId:cityId});
+        this.getQuotationData({carId:this.carId,cityId:cityId});
     },
     getCitysId(provinceid){
         this.maskFlag=!this.maskFlag;
@@ -167,7 +199,7 @@ export default Vue.extend({
       this.getCityData();
       this.getQuotationData({carId:this.$route.query.carId,cityId:this.$route.query.cityId});
   },
-  beforeDestroy() {
+  beforeDestroy(e) {
       window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
   }
 });
@@ -201,6 +233,49 @@ export default Vue.extend({
             align-items: center;
             -webkit-box-pack: center;
             justify-content: center;
+            .resultWrap{
+                height: auto;
+                background: #fff;
+                border-radius: .2rem;
+                padding: .3rem .3rem 0;
+                text-align: center;
+                display: inline-block;
+                width: 76%;
+                overflow: hidden;
+                img{
+                    width: .8rem;
+                    display: block;
+                    margin: 0 auto .3rem;
+                }
+                .p1{
+                    font-size: .4rem;
+                    color: #3cc144;
+                    margin: .1rem;
+                }
+                .p2{
+                    font-size: .24rem;
+                    color: silver;
+                    margin: .15rem;
+                }
+                div{
+                    width: 120%;
+                    margin-left: -10%;
+                    height: .8rem;
+                    margin-top: .3rem;
+                    border-top: 1px solid #f4f4f4;
+                    button{
+                        border: none;
+                        width: 50%;
+                        background: transparent;
+                        font-size: .3rem;
+                        line-height: .8rem;
+                        padding: 0;
+                        box-sizing: border-box;
+                        color: #3aacff;
+                        outline: 0;
+                    }
+                }
+            }
         }
         .alert{
             width: 100%;
