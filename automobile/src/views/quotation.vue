@@ -52,6 +52,7 @@
        <footer v-if="flag"> 
            <button @click="getcheapData">询最低价</button>
        </footer>
+       
        <div class="city" v-if="activeFlag" >
            <div class="provinces">
                <div class="locationCity">
@@ -184,6 +185,7 @@ export default Vue.extend({
         let scrollObj =this.$refs.content;
         let scrollTop = scrollObj.scrollTop; // div 到头部的距离
         let scrollCount=clientHeight+scrollTop;
+        // console.log('scrollObj....',this.$refs.content,this)
         if(scrollCount>=1065){
             this.flag=true;
         }else{
@@ -192,6 +194,7 @@ export default Vue.extend({
     }
   },
   mounted(){
+    //   console.log('this....',this)
       window.addEventListener('scroll', this.handleScroll, true);  // 监听（绑定）滚轮滚动事件
   },
   created(){
@@ -199,7 +202,7 @@ export default Vue.extend({
       this.getCityData();
       this.getQuotationData({carId:this.$route.query.carId,cityId:this.$route.query.cityId});
   },
-  beforeDestroy(e) {
+  beforeDestroy() {
       window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
   }
 });
